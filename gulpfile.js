@@ -3,11 +3,21 @@
 var gulp = require('gulp');
 var changed = require('gulp-changed');
 var imagemin = require('gulp-imagemin');
+var del = require('del');
 
 gulp.task('minimizeImages', function() {
-  gulp.src('img/*.gif')
+  return gulp.src('img/*.gif')
     .pipe(changed('build'))
     .pipe(imagemin())
     .pipe(gulp.dest('build'));
-
 });
+
+gulp.task('clean', function(callback) {
+  del('build/*', callback);
+});
+
+gulp.task('watch', function() {
+  gulp.watch('img/*', ['minimizeImages']);
+});
+
+gulp.task('default', ['minimizeImages']);
